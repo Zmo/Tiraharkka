@@ -20,25 +20,25 @@ public class MinHeap
         return this.heap;
     }
 
-    public int left(int i)
+    public int left(int i) // palauttaa parametrina annetun alkion vasemman lapsen
     {
         return i*2;
     }
 
-    public int right(int i)
+    public int right(int i) // palauttaa parametrina annetun alkion oikeanpuoleisen lapsen
     {
         return i*2+1;
     }
 
-    public int parent(int i)
+    public int parent(int i) // palauttaa parametrina annetun alkion vanhemman
     {
         return i/2;
     }
 
-    public void heapify(int[] A, int i)
+    public void heapify(int[] A, int i) // funktio järjestää parametrina annetun keon alkaen parametrina annetusta indeksistä
     {
-        int l = this.left(i);
-        int r = this.right(i);
+        int l = left(i);
+        int r = right(i);
         if(r <= A[0])  //tarkistetaan, että oikea lapsen indeksi ei ole suurempi kuin keon koko eli että se on olemassa
         {
             int largest;
@@ -62,7 +62,7 @@ public class MinHeap
         }
     }
 
-    public void insert(int[] A, int k)
+    public void insert(int[] A, int k) // funktio lisää kekoon parametrina annetun alkion ja järjestää sitten keon heapify-funktiolla
     {
         A[0] = A[0]+1;
         int i = A[0];
@@ -74,7 +74,7 @@ public class MinHeap
         A[i] = k;
     }
 
-    public int deleteMin(int[] A)
+    public int deleteMin(int[] A) // funktio poistaa keon pienimmän alkion, järjestää loput keosta heapify-funktiollaja palauttaa sitten poistetun alkion
     {
         int min = A[1];
         A[1] = A[A[0]];
