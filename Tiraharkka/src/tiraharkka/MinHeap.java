@@ -16,8 +16,16 @@ public class MinHeap
     public MinHeap()
     {
 	this.heap = new HeapNode[64];
+        for(int i = 0; i < 64; ++i)
+            this.heap[i] = new HeapNode(0, 0, 0);
+
 	this.heap[0].key = 0;
         this.size=64;
+    }
+
+    public HeapNode[] getHeap()
+    {
+        return this.heap;
     }
 
     public int left(int i) // palauttaa parametrina annetun alkion vasemman lapsen
@@ -49,7 +57,7 @@ public class MinHeap
             if(this.heap[i].key > this.heap[smallest].key)
             {
                 int buffer = this.heap[smallest].key;
-                this.heap[smallest] = this.heap[i];
+                this.heap[smallest].copyFrom(this.heap[i]);
                 this.heap[i].key = buffer;
                 heapify(smallest);
             }
@@ -66,14 +74,17 @@ public class MinHeap
     {
         if(this.heap[0].key==this.size-1)
         {
+            int oldSize = size;
             this.size = this.heap[0].key*2;
             this.heap = Arrays.copyOf(this.heap, this.size);
+            for(int i = oldSize; i < size; ++i)
+                this.heap[i] = new HeapNode(0, 0, 0);
         }
 
-        int i = this.heap[0].key++;
+        int i = ++this.heap[0].key;
         while(i>1 && this.heap[parent(i)].key > k)
         {
-            this.heap[i] = this.heap[parent(i)];
+            this.heap[i].copyFrom(this.heap[parent(i)]);
             i = parent(i);
         }
         this.heap[i].key = k;
@@ -85,9 +96,9 @@ public class MinHeap
     {
         if(this.heap[0].key>0)
         {
-            HeapNode min = this.heap[1];
-            this.heap[1] = this.heap[this.heap[0].key];
-            this.heap[this.heap[0].key].key = 0;
+            HeapNode min = new HeapNode(0, 0, 0);
+            min.copyFrom(this.heap[1]);
+            this.heap[1].copyFrom(this.heap[this.heap[0].key]);
             this.heap[0].key = this.heap[0].key-1;
             heapify(1);
             return min;
@@ -102,5 +113,21 @@ public class MinHeap
             return true;
         else
             return false;
+    }
+    
+    public boolean contains(int k, int x, int y)
+    {
+        for(int i=0; i<this.heap.length; ++i)
+        {
+            if(this.heap[i].key==k)
+            {
+                if(this.heap[i].position[0]==x)
+                {
+                    if(this.heap[i].position[1]==y)
+                        return true;
+                }
+            }
+        }
+        return false;
     }
 }

@@ -40,35 +40,15 @@ public class MinHeapTest {
     public void tearDown() {
     }
 
-    /**
-     * Test of heapify method, of class MinHeap.
-     */
-    //@Test
-    /*public void testHeapify()
+    public static int[] intoIntArray(MinHeap heap)
     {
-        System.out.println("heapify");
-        int[] A = {3,2,1,3};
-        MinHeap instance = new MinHeap();
-        instance.heap = {1};
-        instance.heapify(1);
-        int[] expresult = {3,1,2,3};
-        if(Arrays.equals(result, expresult))
+        int[] asd = new int[heap.getHeap()[0].key+1];
+        for(int i=0; i<asd.length; ++i)
         {
-            System.out.println("herp");/*
-            int[] B = {5,5,6,2,1,3};
-            int[] expresult2 = {5,1,2,5,6,3};
-            int[] result2 = instance.heapify(B,1);
-            if(Arrays.equals(result2, expresult2))
-            {
-                System.out.println("Success!");
-                return;
-            }
-            else
-                fail("Odotettu tulos: "+Arrays.toString(expresult2)+", saatu tulos: "+Arrays.toString(result2));
+            asd[i] = heap.getHeap()[i].key;
         }
-        else
-            fail("Odotettu tulos: "+Arrays.toString(expresult)+", saatu tulos: "+Arrays.toString(result));
-    }*/
+        return asd;
+    }
 
     /**
      * Test of insert method, of class MinHeap.
@@ -78,33 +58,33 @@ public class MinHeapTest {
     {
         System.out.println("insert-funktion testi");
         MinHeap instance = new MinHeap();
-        instance.insert(3);
-        instance.insert(6);
-        instance.insert(2);
-        instance.insert(4);
-        instance.insert(1);
-        int[] expresult = {5,1,2,3,6,4,0,0};
-        int[] expresult2 = {8,1,3,2,9,43,7,2,56,0,0,0,0,0,0,0};
-        if(Arrays.equals(instance.getHeap(), expresult))
+        instance.insert(3,0,0);
+        instance.insert(6,0,0);
+        instance.insert(2,0,0);
+        instance.insert(4,0,0);
+        instance.insert(1,0,0);
+        int[] expresult = {5,1,2,3,6,4};
+        int[] expresult2 = {8,1,3,2,9,43,7,2,56};
+        if(Arrays.equals(intoIntArray(instance), expresult))
         {
             MinHeap instance2 = new MinHeap();
-            instance2.insert(56);
-            instance2.insert(2);
-            instance2.insert(7);
-            instance2.insert(9);
-            instance2.insert(43);
-            instance2.insert(2);
-            instance2.insert(1);
-            instance2.insert(3);
-            if(Arrays.equals(expresult2, instance2.getHeap()))
+            instance2.insert(56,0,0);
+            instance2.insert(2,0,0);
+            instance2.insert(7,0,0);
+            instance2.insert(9,0,0);
+            instance2.insert(43,0,0);
+            instance2.insert(2,0,0);
+            instance2.insert(1,0,0);
+            instance2.insert(3,0,0);
+            if(Arrays.equals(expresult2, intoIntArray(instance2)))
             {
                 System.out.println("Testit läpäisty");
             }
             else
-                fail("Testi 2/2: odotettu tulos: "+Arrays.toString(expresult2)+", saatu tulos oli: "+Arrays.toString(instance2.getHeap()));
+                fail("Testi 2/2: odotettu tulos: "+Arrays.toString(expresult2)+", saatu tulos oli: "+Arrays.toString(intoIntArray(instance2)));
         }
         else
-            fail("Testi 1/2: odotettu tulos: "+Arrays.toString(expresult)+", saatu tulos: "+Arrays.toString(instance.getHeap()));
+            fail("Testi 1/2: odotettu tulos: "+Arrays.toString(expresult)+", saatu tulos: "+Arrays.toString(intoIntArray(instance)));
     }
 
     /**
@@ -116,40 +96,40 @@ public class MinHeapTest {
         System.out.println("deleteMin testi");
         MinHeap instance = new MinHeap();
         System.out.println("Lisätään alkio 2");
-        instance.insert(2);
+        instance.insert(2,0,0);
         System.out.println("Lisätään alkio 4");
-        instance.insert(4);
+        instance.insert(4,0,0);
         System.out.println("Lisätään alkio 1");
-        instance.insert(1);
+        instance.insert(1,0,0);
         System.out.println("Lisätään alkio 5");
-        instance.insert(5);
+        instance.insert(5,0,0);
         System.out.println("Lisätään alkio 3");
-        instance.insert(3);
-        System.out.println(Arrays.toString(instance.getHeap()));
+        instance.insert(3,0,0);
+        System.out.println(Arrays.toString(intoIntArray(instance)));
         System.out.println("Poistetaan pienin alkio, odotettu tulos: 1");
-        int min = instance.deleteMin();
+        int min = instance.deleteMin().key;
         System.out.println("Saatu tulos: "+min);
         if(min!=1)
             fail("Testi epäonnistui");
-        System.out.println(Arrays.toString(instance.getHeap()));
+        System.out.println(Arrays.toString(intoIntArray(instance)));
         System.out.println("Poistetaan pienin alkio, odotettu tulos: 2");
-        min = instance.deleteMin();
+        min = instance.deleteMin().key;
         System.out.println("Saatu tulos: "+min);
         if(min!=2)
             fail("Test epäonnistui");
         System.out.println("Poistetaan pienin alkio, odotettu tulos: 3");
-        min = instance.deleteMin();
+        min = instance.deleteMin().key;
         System.out.println("Saatu tulos: "+min);
         if(min!=3)
             fail("Testi epäonnistui");
-        System.out.println(Arrays.toString(instance.getHeap()));
+        System.out.println(Arrays.toString(intoIntArray(instance)));
         System.out.println("Poistetaan pienin alkio, odotettu tulos: 4");
-        min = instance.deleteMin();
+        min = instance.deleteMin().key;
         System.out.println("Saatu tulos: "+min);
         if(min!=4)
             fail("Testi epäonnistui");
         System.out.println("Poistetaan pienin alkio, odotettu tulos: 5");
-        min = instance.deleteMin();
+        min = instance.deleteMin().key;
         System.out.println("Saatu tulos: "+min);
 
         System.out.println("Testi onnistui");
