@@ -10,19 +10,14 @@ import java.util.Arrays;
 
 public class MinHeap
 {
-    private int[] heap;
+    private HeapNode[] heap;
     private int size;
 
     public MinHeap()
     {
-	this.heap = new int[1];
-	this.heap[0] = 0;
-        this.size=1;
-    }
-
-    public int[] getHeap()
-    {
-        return this.heap;
+	this.heap = new HeapNode[64];
+	this.heap[0].key = 0;
+        this.size=64;
     }
 
     public int left(int i) // palauttaa parametrina annetun alkion vasemman lapsen
@@ -44,138 +39,68 @@ public class MinHeap
     {
         int l = left(i);
         int r = right(i);
-        if(r <= this.heap[0])
+        if(r <= this.heap[0].key)
         {
             int smallest;
-            if(this.heap[l] < this.heap[r])
+            if(this.heap[l].key < this.heap[r].key)
                 smallest = l;
             else
                 smallest = r;
-            if(this.heap[i] > this.heap[smallest])
+            if(this.heap[i].key > this.heap[smallest].key)
             {
-                int buffer = this.heap[smallest];
+                int buffer = this.heap[smallest].key;
                 this.heap[smallest] = this.heap[i];
-                this.heap[i] = buffer;
+                this.heap[i].key = buffer;
                 heapify(smallest);
             }
         }
-        else if(l == this.heap[0] && this.heap[i] > this.heap[l])
+        else if(l == this.heap[0].key && this.heap[i].key > this.heap[l].key)
         {
-            int buffer = this.heap[i];
-            this.heap[i] = this.heap[l];
-            this.heap[l] = buffer;
+            int buffer = this.heap[i].key;
+            this.heap[i].key = this.heap[l].key;
+            this.heap[l].key = buffer;
         }
     }
 
-    public void insert(int k) // funktio lisää kekoon parametrina annetun alkion ja järjestää sitten keon heapify-funktiolla
+    public void insert(int k, int x, int y) // funktio lisää kekoon parametrina annetun alkion ja järjestää sitten keon heapify-funktiolla
     {
-        if(this.heap[0]==this.size-1)
+        if(this.heap[0].key==this.size-1)
         {
-            this.size = this.heap[0]*2+2;
+            this.size = this.heap[0].key*2;
             this.heap = Arrays.copyOf(this.heap, this.size);
         }
 
-        int i = this.heap[0]+1;
-        while(i>1 && this.heap[parent(i)] > k)
+        int i = this.heap[0].key++;
+        while(i>1 && this.heap[parent(i)].key > k)
         {
             this.heap[i] = this.heap[parent(i)];
             i = parent(i);
         }
-        this.heap[i] = k;
-        this.heap[0] = this.heap[0]+1;
+        this.heap[i].key = k;
+        this.heap[i].position[0] = x;
+        this.heap[i].position[1] = y;
     }
 
-    public int deleteMin() // funktio poistaa keon pienimmän alkion, järjestää loput keosta heapify-funktiollaja palauttaa sitten poistetun alkion
+    public HeapNode deleteMin() // funktio poistaa keon pienimmän alkion, järjestää loput keosta heapify-funktiollaja palauttaa sitten poistetun alkion
     {
-        if(this.heap[0]>0)
+        if(this.heap[0].key>0)
         {
-            int min = this.heap[1];
-            this.heap[1] = this.heap[this.heap[0]];
-            this.heap[this.heap[0]] = 0;
-            this.heap[0] = this.heap[0]-1;
+            HeapNode min = this.heap[1];
+            this.heap[1] = this.heap[this.heap[0].key];
+            this.heap[this.heap[0].key].key = 0;
+            this.heap[0].key = this.heap[0].key-1;
             heapify(1);
             return min;
         }
         else
-            return -9999;
-    }
-}/*
-public class MinHeap
-{
-    private int[] heap;
-
-    public MinHeap()
-    {
-	heap = new int[1];
-	heap[0] = 0;
+            return null;
     }
 
-    public int[] getHeap()
+    public boolean isEmpty()
     {
-        return this.heap;
+        if(heap[0].key == 0)
+            return true;
+        else
+            return false;
     }
-
-    public int left(int i) // palauttaa parametrina annetun alkion vasemman lapsen
-    {
-        return i*2;
-    }
-
-    public int right(int i) // palauttaa parametrina annetun alkion oikeanpuoleisen lapsen
-    {
-        return i*2+1;
-    }
-
-    public int parent(int i) // palauttaa parametrina annetun alkion vanhemman
-    {
-        return i/2;
-    }
-
-    public int[] heapify(int[] A, int i) // funktio järjestää parametrina annetun keon alkaen parametrina annetusta indeksistä
-    {
-        int l = left(i);
-        int r = right(i);
-        if(r <= A[0])
-        {
-            int smallest;
-            if(A[l] < A[r])
-                smallest = l;
-            else
-                smallest = r;
-            if(A[i] > A[smallest])
-            {
-                int buffer = A[smallest];
-                A[smallest] = A[i];
-                A[i] = buffer;
-                heapify(A, smallest);
-            }
-        }
-        else if(l == A[0] && A[i] < A[l])
-        {
-            int buffer = A[i];
-            A[i] = A[l];
-            A[l] = buffer;
-        }
-        return A;
-    }
-
-    public void insert(int[] A, int k) // funktio lisää kekoon parametrina annetun alkion ja järjestää sitten keon heapify-funktiolla
-    {
-        A[0] = A[0]+1;
-        int i = A[0];
-        while(i>1 && A[parent(i)] < k)
-        {
-            A[i] = A[parent(i)];
-            i = parent(i);
-        }
-        A[i] = k;
-    }
-
-    public int deleteMin(int[] A) // funktio poistaa keon pienimmän alkion, järjestää loput keosta heapify-funktiollaja palauttaa sitten poistetun alkion
-    {
-        int min = A[1];
-        A[1] = A[A[0]];
-        A[0] = A[0]-1;
-        heapify(A, 1);
-        return min;
-    }
-}*/
+}
